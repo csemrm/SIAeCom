@@ -38,7 +38,7 @@
         <div class="fore_box">
             <h5>Our menu</h5>
             <ol class="footnotes">
-                <li>&raquo;  <span><a href="index.html">Home</a></span></li>
+                <li>&raquo;  <span><a href="<?php echo site_url() ?>">Home</a></span></li>
                 <li>&raquo;  <span><a href="products.html">Products</a></span></li>
                 <li>&raquo; <span><a href="services.html">Services</a></span></li>
                 <li>&raquo; <span><a href="contact.html">Contact us</a></span></li>
