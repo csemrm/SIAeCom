@@ -107,6 +107,12 @@ class Fuel_custom_fields {
 			$params['data']['link_pdfs'] = 1;
 		}
 
+		// set the image folder for inserting assets
+		if (isset($params['link_filter']))
+		{
+			$params['data']['link_filter'] = $params['link_filter'];
+		}
+
 		// adds markdown controlls to the markItUp!  editor
 		if (isset($params['markdown']) AND $params['markdown'] === TRUE)
 		{
@@ -158,12 +164,12 @@ class Fuel_custom_fields {
 			$file_params['class'] = 'multifile '.$params['class'];
 		}
 		$file_params['name'] = str_replace(array('[', ']', '__'), array('_', '', '_'), $params['name']);
-		$file_params['id'] = $params['name'].'_upload';
+		$file_params['id'] = $params['id'].'_upload';
 
 
 		$str = '';
+
 		$preview = '';
-		$asset_folder = '';
 
 		if (!empty($params['value']) AND (!isset($params['display_preview']) OR $params['display_preview'] === TRUE))
 		{
@@ -179,19 +185,10 @@ class Fuel_custom_fields {
 			{
 				$params['img_styles'] = 'float: left; width: 100px;';
 			}
-			if (isset($params['folder']) OR isset($params['upload_path']))
+
+			if (!empty($params['folder']))
 			{
-				if (isset($params['folder']))
-				{
-					$asset_folder = trim($params['folder'], '/').'/';
-					$asset_path = $asset_folder.$params['value'];
-					$asset_path = assets_path($asset_path);
-				}
-				else
-				{
-					$asset_folder = assets_server_to_web_path($params['upload_path']).'/';
-					$asset_path = $asset_folder.$params['value'];
-				}
+				$asset_path = trim($params['folder'], '/').'/'.$params['value'];
 
 				if (!empty($params['replace_values']))
 				{
@@ -199,12 +196,10 @@ class Fuel_custom_fields {
 					{
 						if (is_string($val))
 						{
-							$asset_path = str_replace('{'.$key.'}', $val, $asset_path);
-							$asset_folder = str_replace('{'.$key.'}', $val, $asset_folder);
+							$asset_path = str_replace('{'.$key.'}', $val, $asset_path);	
 						}
 					}
 				}
-				
 			}
 			$preview = '';
 			if (!empty($asset_path))
@@ -212,7 +207,7 @@ class Fuel_custom_fields {
 				$preview .= '<a href="'.$asset_path.'" target="_blank">';
 				if (isset($params['is_image']) OR (!isset($params['is_image']) AND is_image_file($asset_path)))
 				{
-					$preview .= '<br><img src="'.$asset_path.'" style="'.$params['img_styles'].'"/>';
+					$preview .= '<br><img src="'.assets_path($asset_path).'" style="'.$params['img_styles'].'"/>';
 				}
 				else
 				{
@@ -228,15 +223,6 @@ class Fuel_custom_fields {
 		
 		if (!empty($params['display_input']))
 		{
-			$params['data'] = array(
-			'folder' => $asset_folder,
-			);
-			$asset_class = '';
-			if (!isset($params['select']) OR (isset($params['select']) AND $params['select'] !== FALSE))
-			{
-				$asset_class = 'asset_select';
-			}
-			$params['class'] = (!empty($params['class'])) ? $params['class'].' '.$asset_class : $asset_class;
 			$params['type'] = '';
 			$str .= '<br><br>'.$form_builder->create_field($params); 
 		}
@@ -293,12 +279,12 @@ class Fuel_custom_fields {
 		$asset_class = '';
 		if (!isset($params['select']) OR (isset($params['select']) AND $params['select'] !== FALSE))
 		{
-			$asset_class .= 'asset_select';
+			$asset_class .= ' asset_select';
 		}
 
 		if (!isset($params['upload']) OR (isset($params['upload']) AND $params['upload'] !== FALSE))
 		{
-			$asset_class .= 'asset_upload';
+			$asset_class .= ' asset_upload';
 		}
 		$asset_class .= ' '.$params['folder'];
 		$params['class'] = (!empty($params['class'])) ? $params['class'].' '.$asset_class : $asset_class;

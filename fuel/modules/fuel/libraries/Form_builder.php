@@ -1173,6 +1173,7 @@ class Form_builder {
 			'represents' => '', // specifies what other types of fields that this field should represent
 			'ignore_representative' => FALSE, // ignores any representative
 			'data' => array(), // data attributes
+			'attributes' => '', // a generic string value of attributes for the form field (e.g. 'class="myclass"'
 			'__DEFAULTS__' => TRUE // set so that we no that the array has been processed and we can check it so it won't process it again'
 		);
 		
@@ -1655,6 +1656,7 @@ class Form_builder {
 			'data' => $params['data'],
 			'style' => $params['style'],
 			'tabindex' => $params['tabindex'],
+			'attributes' => $params['attributes'],
 		);
 		
 		if (isset($params['attrs']))
@@ -1707,6 +1709,7 @@ class Form_builder {
 			'data' => $params['data'],
 			'style' => $params['style'],
 			'tabindex' => $params['tabindex'],
+			'attributes' => $params['attributes'],
 		);
 		$name = $params['name'];
 		if (!empty($params['multiple']))
@@ -1754,6 +1757,7 @@ class Form_builder {
 			'data' => $params['data'],
 			'style' => $params['style'],
 			'tabindex' => $params['tabindex'],
+			'attributes' => $params['attributes'],
 		);
 		if ($params['checked'])
 		{
@@ -1791,6 +1795,7 @@ class Form_builder {
 			'data' => $params['data'],
 			'style' => $params['style'],
 			'tabindex' => $params['tabindex'],
+			'attributes' => $params['attributes'],
 		);
 		return $this->form->textarea($params['name'], $params['value'], $attrs);
 	}
@@ -1837,6 +1842,7 @@ class Form_builder {
 			'data' => $params['data'],
 			'style' => $params['style'],
 			'tabindex' => $params['tabindex'],
+			'attributes' => $params['attributes'],
 		);
 		return $this->form->submit($params['value'], $params['name'], $attrs);
 	}
@@ -1861,6 +1867,7 @@ class Form_builder {
 			'data' => $params['data'],
 			'style' => $params['style'],
 			'tabindex' => $params['tabindex'],
+			'attributes' => $params['attributes'],
 		);
 		$use_input_type = (isset($params['use_input']) AND $params['use_input'] === FALSE) ? FALSE : TRUE;
 		return $this->form->button($params['value'], $params['name'], $attrs, $use_input_type);
@@ -1983,6 +1990,7 @@ class Form_builder {
 						'id' => Form::create_id($params['name']).$i,
 						'style' => '', // to overwrite any input width styles
 						'tabindex' => ((is_array($params['tabindex']) AND isset($params['tabindex'][$i - 1])) ? $params['tabindex'][$i - 1] : NULL),
+						'attributes' => $params['attributes'],
 					);
 
 					if (in_array($key, $value))
@@ -2041,6 +2049,7 @@ class Form_builder {
 			'required' => (!empty($params['required']) ? TRUE : NULL),
 			'accept' => str_replace('|', ',', $params['accept']),
 			'tabindex' => $params['tabindex'],
+			'attributes' => $params['attributes'],
 		);
 		
 		if (is_array($this->form_attrs))
@@ -2348,32 +2357,80 @@ class Form_builder {
 
 						if (isset($val["'.$process_key.'"]))
 						{
+							if (is_string($val["'.$process_key.'"]))
+							{
+								$z = $val["'.$process_key.'"];
+							}
+							else if (is_array($val["'.$process_key.'"]) AND isset($val["'.$process_key.'"]["'.$params['name'].'"]))
+							{
+								$z = $val["'.$process_key.'"]["'.$params['name'].'"];
+							}
+
 							$date = (!empty($val["'.$process_key.'"]) AND is_date_format($val["'.$process_key.'"])) ? current(explode(" ", $val["'.$process_key.'"])) : "";
 							$hr   = (!empty($val["'.$process_key.'_hour"]) AND  (int)$val["'.$process_key.'_hour"] > 0 AND (int)$val["'.$process_key.'_hour"] < 24) ? $val["'.$process_key.'_hour"] : "";
 							$min  = (!empty($val["'.$process_key.'_min"]) AND is_numeric($val["'.$process_key.'_min"]))  ? $val["'.$process_key.'_min"] : "00";
 							$ampm = (isset($val["'.$process_key.'_am_pm"]) AND $hr AND $min) ? $val["'.$process_key.'_am_pm"] : "";
+							
 
-							if (!empty($ampm) AND !empty($hr) AND $hr > 12)
+							if (is_string($val["'.$process_key.'"]))
 							{
-								if ($hr > 24) 
+								$date = (!empty($val["'.$process_key.'"]) AND is_date_format($val["'.$process_key.'"])) ? current(explode(" ", $val["'.$process_key.'"])) : "";
+								$hr   = (!empty($val["'.$process_key.'_hour"]) AND  (int)$val["'.$process_key.'_hour"] > 0 AND (int)$val["'.$process_key.'_hour"] < 24) ? $val["'.$process_key.'_hour"] : "";
+								$min  = (!empty($val["'.$process_key.'_min"]) AND is_numeric($val["'.$process_key.'_min"]))  ? $val["'.$process_key.'_min"] : "00";
+								$ampm = (isset($val["'.$process_key.'_am_pm"]) AND $hr AND $min) ? $val["'.$process_key.'_am_pm"] : "";
+
+								if (!empty($ampm) AND !empty($hr) AND $hr > 12)
 								{
-									$hr = "00";
+									if ($hr > 24) 
+									{
+										$hr = "00";
+									}
+									else
+									{
+										$hr = (int) $hr - 12;
+										$ampm = "pm";
+									}
 								}
-								else
+
+								$dateval = $value[$key]["'.$process_key.'"];
+								if ($date != "")
 								{
-									$hr = (int) $hr - 12;
-									$ampm = "pm";
+									if (!empty($hr)) $dateval .= " ".$hr.":".$min.$ampm;
+								}
+								if (!empty($dateval))
+								{
+									$value[$key]["'.$process_key.'"] = $dateval;	
 								}
 							}
+							else if (is_array($val["'.$process_key.'"]) AND isset($val["'.$process_key.'"]["'.$params['name'].'"]))
+							{
+								$date = (!empty($val["'.$process_key.'"]["'.$params['name'].'"]) AND is_date_format($val["'.$process_key.'"]["'.$params['name'].'"])) ? current(explode(" ", $val["'.$process_key.'"]["'.$params['name'].'"])) : "";
+								$hr   = (!empty($val["'.$process_key.'"]["'.$params['name'].'_hour"]) AND  (int)$val["'.$process_key.'"]["'.$params['name'].'_hour"] > 0 AND (int)$val["'.$process_key.'"]["'.$params['name'].'_hour"] < 24) ? $val["'.$process_key.'"]["'.$params['name'].'_hour"] : "";
+								$min  = (!empty($val["'.$process_key.'"]["'.$params['name'].'_min"]) AND is_numeric($val["'.$process_key.'"]["'.$params['name'].'_min"]))  ? $val["'.$process_key.'"]["'.$params['name'].'_min"] : "00";
+								$ampm = (isset($val["'.$process_key.'"]["'.$params['name'].'_am_pm"]) AND $hr AND $min) ? $val["'.$process_key.'"]["'.$params['name'].'_am_pm"] : "";
 
-							$dateval = $value[$key]["'.$process_key.'"];
-							if ($date != "")
-							{
-								if (!empty($hr)) $dateval .= " ".$hr.":".$min.$ampm;
-							}
-							if (!empty($dateval))
-							{
-								$value[$key]["'.$process_key.'"] = $dateval;	
+								if (!empty($ampm) AND !empty($hr) AND $hr > 12)
+								{
+									if ($hr > 24) 
+									{
+										$hr = "00";
+									}
+									else
+									{
+										$hr = (int) $hr - 12;
+										$ampm = "pm";
+									}
+								}
+
+								$dateval = $value[$key]["'.$process_key.'"]["'.$params['name'].'"];
+								if ($date != "")
+								{
+									if (!empty($hr)) $dateval .= " ".$hr.":".$min.$ampm;
+								}
+								if (!empty($dateval))
+								{
+									$value[$key]["'.$process_key.'"]["'.$params['name'].'"] = $dateval;	
+								}
 							}
 						}
 					}
@@ -2452,6 +2509,7 @@ class Form_builder {
 			'data' => $params['data'],
 			'style' => $params['style'],
 			'tabindex' => $params['tabindex'],
+			'attributes' => $params['attributes'],
 		);
 
 		$numeric_class = 'numeric';

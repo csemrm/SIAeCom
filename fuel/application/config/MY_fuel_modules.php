@@ -1,31 +1,55 @@
-<?php 
+<?php
+
 /*
-|--------------------------------------------------------------------------
-| MY Custom Modules
-|--------------------------------------------------------------------------
-|
-| Specifies the module controller (key) and the name (value) for fuel
-*/
+  |--------------------------------------------------------------------------
+  | MY Custom Modules
+  |--------------------------------------------------------------------------
+  |
+  | Specifies the module controller (key) and the name (value) for fuel
+ */
 
 
-/*********************** EXAMPLE ***********************************
+/* * ********************* EXAMPLE ***********************************
 
-$config['modules']['quotes'] = array(
-	'preview_path' => 'about/what-they-say',
-);
+  $config['modules']['quotes'] = array(
+  'preview_path' => 'about/what-they-say',
+  );
 
-$config['modules']['projects'] = array(
-	'preview_path' => 'showcase/project/{slug}',
-	'sanitize_images' => FALSE // to prevent false positives with xss_clean image sanitation
-);
+  $config['modules']['projects'] = array(
+  'preview_path' => 'showcase/project/{slug}',
+  'sanitize_images' => FALSE // to prevent false positives with xss_clean image sanitation
+  );
 
-*********************** /EXAMPLE ***********************************/
+ * ********************** /EXAMPLE ********************************** */
 
 
 
-/*********************** OVERWRITES ************************************/
+/* * ********************* OVERWRITES *********************************** */
 
-$config['module_overwrites']['categories']['hidden'] = TRUE; // change to FALSE if you want to use the generic categories module
+//$config['module_overwrites']['categories']['hidden'] = TRUE; // change to FALSE if you want to use the generic categories module
 $config['module_overwrites']['tags']['hidden'] = TRUE; // change to FALSE if you want to use the generic tags module
 
-/*********************** /OVERWRITES ************************************/
+/* * ********************* /OVERWRITES *********************************** */
+
+
+$config['modules']['products_categories'] = array(
+    'display_field' => 'name',
+        // 'module_name' => 'products_categories',
+);
+
+$config['modules']['products'] = array(
+    'display_field' => 'item_name',
+    'js'=> 'siatex/admin/products'
+);
+
+$config['modules']['products_images'] = array(
+    'display_field' => 'item_image',
+);
+
+$config['modules']['products_color_table'] = array(
+    'display_field' => 'color_code',
+);
+
+$config['modules']['Products_measurement_table'] = array(
+     
+);

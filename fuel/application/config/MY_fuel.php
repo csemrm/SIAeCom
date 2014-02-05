@@ -90,6 +90,6 @@ if (!empty($config['modules_allowed']))
 */
 
 
-
+$config['xtra_css'] = 'siatex/admin/style';
 /* End of file MY_fuel.php */
 /* Location: ./application/config/MY_fuel.php */

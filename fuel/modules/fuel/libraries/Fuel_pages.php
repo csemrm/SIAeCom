@@ -188,6 +188,7 @@ class Fuel_pages extends Fuel_base_library {
 		}
 		$views_path = APPPATH.'views/'.$subfolder;
 		$view_pages = directory_to_array($views_path, TRUE, '/^_(.*)|\.html$/', FALSE, TRUE);
+		sort($view_pages);
 		return $view_pages;
 	}
 	
@@ -809,9 +810,6 @@ class Fuel_page extends Fuel_base_library {
 			$layout_vars['CI'] =& $this->CI;
 
 			$output = $this->CI->load->module_view($this->layout->module(), $this->layout->view_path(), $layout_vars, TRUE);
-
-			// now parse any template like syntax...
-			$output = $this->CI->parser->parse_string($output, $vars, TRUE);
 			unset($layout_vars);
 
 			// check if the content should be double parsed

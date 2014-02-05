@@ -1,4 +1,4 @@
-<?php if (empty($assets_path)) $assets_path = 'assets/'; ?>
+<?php if (empty($assets_path)) $assets_path = '/assets/'; ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -67,14 +67,14 @@
 
                             <!--Hader-->
 
-                            <div id="hader">
-                                <div id="logo"><a title="Dutta Fashion" href="#"><img src="<?php echo $assets_path; ?>images/logo.png" alt="Dutta Fashion" width="192" height="126" border="0" /></a></div>
+                            <div id="header_1">
+                                <div id="logo"><a title="Dutta Fashion" href="<?php echo site_url(); ?>"><img src="<?php echo $assets_path; ?>images/logo.png" alt="Dutta Fashion" width="192" height="126" border="0" /></a></div>
                                 <div id="right_menu">
                                     <ul>
                                         <li class="home_icon" ><a href="<?php echo site_url(); ?>"><span>Home</span></a></li>
-                                        <li class="products"><a href="products.html">Products</a></li>
-                                        <li class="services"><a href="services.html">services</a></li>
-                                        <li class="contact"><a href="contact.html">contact</a></li>
+                                        <li class="products"><a href="<?php echo site_url('products'); ?>">Products</a></li>
+                                        <li class="services"><a href="<?php echo site_url('services'); ?>">services</a></li>
+                                        <li class="contact"><a href="<?php echo site_url('contact'); ?>">contact</a></li>
                                     </ul>
 
                                 </div>

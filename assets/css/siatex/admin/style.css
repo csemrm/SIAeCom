@@ -1,0 +1,20 @@
+.field_type_fieldset  table,.field_type_fieldset  table,.products_measurement_table  .repeatable{
+    width: 100%;
+    overflow: hidden;
+}
+.products_images .repeatable_content,.products_color_table .repeatable_content,.products_measurement_table .repeatable_content{
+    display: block !important;
+}
+.products_images .remove,.products_color_table .remove,.products_measurement_table .remove{
+    display: block !important;
+}
+.products_measurement_table .form > div > div {
+    float: left;
+    overflow: hidden;
+    width: 135px;
+}
+
+.products_measurement_table .form > div > div .label {
+    display: inline-block;
+    width: 40px;
+}

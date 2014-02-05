@@ -135,6 +135,7 @@ would need to be created on the frontend (e.g. jqx.config.fuelPath, jqx.config.i
 	</li>
 	<li><strong>row_class</strong>: sets a class on the containing table row or container div (depending on the rendering method)</li>
 	<li><strong>tabindex</strong>: sets the tabindex value of a field. If using a mutli select, datetime, time, or enum, the value needs to be an array</li>
+	<li><strong>attributes</strong>: a generic string value of attributes for the form field (e.g. 'class="myclass"'). WARNING... this may clash with other attributes specified above</li>
 </ul>
 
 <h2 id="form_field_types">Form Field Types</h2>
@@ -864,6 +865,7 @@ $this->form_builder->register_custom_field($key, $custom_field);
 		<li><strong>img_folder</strong>: the image folder to pull from when inserting an image</li>
 		<li><strong>img_order</strong>: the image order displayed in the dropdown select. Options are <dfn>name</dfn> and <dfn>last_updated</dfn>. Default is <dfn>name</dfn></li>
 		<li><strong>link_pdfs</strong>: a boolean value that determines whether to display PDFs along with the list of URLs when inserting a link. Default is set to FALSE which will not show PDFs (note that special logic will need to be created in the layouts to use either <dfn>site_url</dfn> or <dfn>pdf_path</dfn> functions)</li>
+		<li><strong>link_filter</strong>: a regular expression value that can be used to filter the page list down to only the pages you need</li>
 		<li><strong>editor_config</strong>: sets the editor's (markItUp! or CKEditor) configuration values for a particular field. Camel-cased attributes need to be converted to lowercase with hyphens (e.g. extraPlugins should be extra-plugins). These configuration values are attached to the textarea field so you can use
 			Javascript to set more complex object values as long they are set on the textarea field before markItUp! or CKEditor initialization (e.g. $('.mytextarea').data('toolbar', [['Bold','Italic','Strike']]).</li>
 		<li><strong>markdown</strong>: changes toolbar to use <a href="http://daringfireball.net/projects/markdown/" target="_blank">Markdown</a> formatting instead of HTML. Must have editor set to use markItUp!</li>
@@ -1046,6 +1048,8 @@ $this->form_builder->register_custom_field($key, $custom_field);
 		post-processed result is a JSON encoded string:</p>
 	<ul>
 		<li><strong>delimiter</strong>: the delimiter used to separate between a key and a value. The default is a ":" (colon).</li>
+		<li><strong>allow_numeric_indexes</strong>: determines whether to display numeric indexes or not.</li>
+		<li><strong>allow_empty_values</strong>: determines whether to display items that may have no value.</li>
 	</ul>
 	
 	<h4>Example</h4>
