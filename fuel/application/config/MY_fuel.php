@@ -1,9 +1,10 @@
 <?php
+
 /*
-|---------------------------------------------------------------------------------------------------
-| IMPORTANT: for a complete list of fuel configurations, go to the modules/fuel/config/fuel.php file
-|---------------------------------------------------------------------------------------------------
-*/
+  |---------------------------------------------------------------------------------------------------
+  | IMPORTANT: for a complete list of fuel configurations, go to the modules/fuel/config/fuel.php file
+  |---------------------------------------------------------------------------------------------------
+ */
 
 // path to the fuel admin from the web base directory... MUST HAVE TRAILING SLASH!
 $config['fuel_path'] = 'fuel/';
@@ -23,7 +24,7 @@ $config['fuel_mode'] = 'auto';
 
 // specifies which modules are allowed to be used in the fuel admin
 $config['modules_allowed'] = array(
-	'user_guide',
+    'user_guide',
 );
 
 // used for system emails
@@ -43,13 +44,13 @@ $config['max_page_params'] = 0;
 $config['auto_search_views'] = FALSE;
 
 // max upload files size for assets
-$config['assets_upload_max_size']	= 5000;
+$config['assets_upload_max_size'] = 5000;
 
 // max width for asset images beign uploaded
-$config['assets_upload_max_width']  = 1024;
+$config['assets_upload_max_width'] = 1024;
 
 // max height for asset images beign uploaded
-$config['assets_upload_max_height']  = 768;
+$config['assets_upload_max_height'] = 768;
 
 
 // text editor settings  (options are markitup or ckeditor)
@@ -70,7 +71,7 @@ $config['ck_editor_settings'] = "{
 			['Preview'],
 			['Maximize']
 		],
-	contentsCss: '".WEB_PATH."assets/css/main.css',
+	contentsCss: '" . WEB_PATH . "assets/css/siatex/style.css', 
 	htmlEncodeOutput: false,
 	entities: false,
 	bodyClass: 'ckeditor',
@@ -81,13 +82,13 @@ $config['ck_editor_settings'] = "{
 	}";
 
 /* Uncomment if you want to control FUEL settings in the CMS. Below are a couple examples of ones you can configure
-$config['settings'] = array();
-$config['settings']['site_name'] = array();
-if (!empty($config['modules_allowed']))
-{
-	$config['settings']['modules_allowed'] = array('type' => 'multi', 'options' => array_combine($config['modules_allowed'], $config['modules_allowed']));
-}
-*/
+  $config['settings'] = array();
+  $config['settings']['site_name'] = array();
+  if (!empty($config['modules_allowed']))
+  {
+  $config['settings']['modules_allowed'] = array('type' => 'multi', 'options' => array_combine($config['modules_allowed'], $config['modules_allowed']));
+  }
+ */
 
 
 $config['xtra_css'] = 'siatex/admin/style';

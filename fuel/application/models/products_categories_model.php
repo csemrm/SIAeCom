@@ -27,6 +27,13 @@ class products_categories_model extends Base_module_model {
         return $data;
     }
 
+    function categories_list($limit = NULL, $offset = NULL, $col = 'name', $order = 'asc') {
+
+        $data = parent::list_items($limit, $offset, $col, $order);
+
+        return $data;
+    }
+
     function form_fields($values = null) {
         $CI = & get_instance();
         $fields = parent::form_fields();

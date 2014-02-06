@@ -14,4 +14,9 @@ class home extends Fuel_base_controller {
         $this->load->view('SIATEX/home', $data);
     }
 
+    function contact() {
+        $data = array();
+        redirect('contact');
+    }
+
 }

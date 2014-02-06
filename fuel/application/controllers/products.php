@@ -1,16 +1,19 @@
 <?php
 
-require_once(FUEL_PATH . '/libraries/Fuel_base_controller.php');
-
-class products extends Fuel_base_controller {
+class products extends CI_Controller {
 
     function __construct() {
 
         parent::__construct();
+        $this->load->model(array('products_categories_model', 'products_model'));
     }
 
     function index() {
         $data = array();
+        $data['css'] = '';
+        $data['js'] = '';
+        $data['products_categories'] =  $this->products_categories_model->categories_list();
+
         $this->load->view('SIATEX/products', $data);
     }
 

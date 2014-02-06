@@ -52,3 +52,6 @@ include(MODULES_PATH.'/fuel/config/fuel_routes.php');
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
+
+
+$route['categories/(:any)'] = "categories/index/$1";

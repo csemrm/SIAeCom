@@ -8,26 +8,16 @@
 
         <div class="products_left_icon">
             <h3>our Products</h3>
-
             <ul>
-                <li><a href="#">t-shirt</a></li>
-                <li>
-                    <ul>
-                        <li><a href="#">TEES</a></li>
-                        <li><a href="#">TANK TOPS</a></li>
-                        <li><a href="#">SWEATSHIRTS</a></li>
-                        <li><a href="#">TEES</a></li>
-                        <li><a href="#">SWEATSHIRTS</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">TANK TOPS</a></li>
-                <li><a href="#">CUT-N-SEW</a></li>
-                <li><a href="#">BOTTOMS</a></li>
-                <li><a href="#">HEADWEAR</a></li>
-                <li><a href="#">ACCESSORIES</a></li>
-                <li><a href="#">FOOTWEAR</a></li>
-                <li><a href="#">SKATE HARDGOODS</a></li>
-                <li><a href="#">Polo T-Shirt</a></li>
+                <?php
+                foreach ($products_categories as $key => $products_category) {
+                    ?>
+                    <li><a href="<?php echo site_url('categories/' . $products_category['slug']); ?>"><?php echo $products_category['name']; ?></a></li>
+                    <?php
+                }
+                ?>
+
+
             </ul>
 
         </div>
