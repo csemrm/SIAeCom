@@ -1,5 +1,11 @@
 <?php $this->load->view('SIATEX/_blocks/header') ?>
 <?php if (empty($assets_path)) $assets_path = '/assets/'; ?>
+<?php
+
+//echo '<pre>';
+//print_r($products_categories);
+//echo '</pre>';
+?>
 <section id="main_inner">
 
     <div id="services">
@@ -8,24 +14,43 @@
 
         <div class="products_left_icon">
             <h3>our Products</h3>
-            <ul>
-                <?php
-                foreach ($products_categories as $key => $products_category) {
-                    ?>
-                    <li><a href="<?php echo site_url('categories/' . $products_category['slug']); ?>"><?php echo $products_category['name']; ?></a></li>
-                    <?php
-                }
-                ?>
+            <ul id="theMenu">
+                <?php foreach ($products_categories as $key => $products_category) { ?>
+                    <li class="parent_li">
+                        <ul id="xtraMenu1">
+                            <?php
+                            if (!empty($products_category['children'])) {
+                                ?>
+                                <h3 class="head"><a><?php echo $products_category['name']; ?></a></h3>
+                                <?php
+                                if (!empty($products_category['products'])) {
+                                    getProducts($products_category['products']);
+                                }
+                                getChild($products_category['children'], 2);
+                            } else {
+                                ?>
+                                <a><?php echo $products_category['name']; ?></a>
+                                <?php
+                                if (!empty($products_category['products'])) {
+                                    getProducts($products_category['products']);
+                                }
+                            }
+                            ?>
+                        </ul>
+                    </li>
+
+                <?php } ?>
 
 
             </ul>
+
 
         </div>
 
         <div class="products_center">
             <div class="products_left_conten">
                 <ul class="products_left_conten_two">
-                    <li>Home</li>
+                    <li><a href="<?php echo base_url(); ?>"> Home</a></li>
                     <li> > </li>
                     <li>T-shirt</li>
                     <li> > </li>
@@ -59,96 +84,140 @@
 
             </div>
             <div class="products_right_conten">
-                <h3> basic t-shirt</h3>
+                <h3> <?php echo $products_data['item_name']; ?></h3>
                 <ul class="products_right_conten_list">
-                    <li> 100% Cotton Single Jersey</li>
-                    <li>120-130 gm/m²</li>
-                    <li>Tubular   Body</li>
-                    <li>Special Treatment for Stretch like effect</li>
-                    <li>AZO Free Reactive dyeing & pre shrunk.</li>
-                    <li>Minimum Qty. 10 Pcs Per Colour.</li>
+                    <li> <?php echo $products_data['fabrics']; ?></li>
+                    <li>  <?php echo $products_data['weight']; ?></li>
+                    <li>   <?php echo $products_data['quality']; ?></li>
+                    <li>    <?php echo $products_data['standard']; ?></li>
+                    <li>    <?php echo $products_data['style']; ?></li>
+                    <li>Minimum Qty. 10 Pcs Per Color.</li>
                     <li>
-                        <select>
+                        <!--select>
                             <option>Select Size </option>
-                            <option>S </option>
-                            <option>M </option>
-                            <option>XL </option>
-                            <option>2XL </option>
-                            <option>3XL </option>
-                        </select>
+                        <?php foreach ($size as $key => $value) {
+                            ?>
+                                                                                                                                                    <option value="<?php echo $key ?>"><?php echo $value ?></option>
+                        <?php }
+                        ?>
+                        </select-->
 
                     </li>
 
                     <li>
-                        <br><select>
-                            <option>Asian</option>
-                            <option>Europe </option>
+                        <br><select name="select_type" id="select_type">
+                            <?php foreach ($type as $key => $value) {
+                                ?>
+                                <option value="<?php echo $key ?>"><?php echo $value['name'] ?></option>
+                            <?php }
+                            ?>
                         </select>
 
                     </li>
                 </ul>
-                <br><h3 class="price">Price : $25.00</h3>
+                <br>
+                <h3 class="price">Price  </h3>
+                <p class="measurement2">Color : <span id="color_price">$25.00</span>  </p>
+                <p class="measurement2">Black/White : <span id="color_price">$25.00</span>  </p>
                 <p class="measurement2"><strong>Measurement</strong></p>
+                <div id="tabs" class="measurement_tab">
 
-
-                <div class="measurement_tab">
                     <ul>
-                        <li class="active"><a href="#">Asian</a></li>
-                        <li><a href="#">Europe</a></li>
-                        <li><a href="#">Text</a></li>
-                        <li><a href="#">Text</a></li>
+                        <?php foreach ($type as $key => $value) {
+                            ?>
+                            <li><a href="#tabs-<?php echo $key ?>" ><?php echo $value['name'] ?></a></li>
+                        <?php }
+                        ?>
+
                     </ul>
-                </div>                                                               
-                <div class="measurement">
+                    <?php foreach ($type as $key => $value) {
+                        ?>
+                        <div id="tabs-<?php echo $key ?>" class="measurement" >
+                            <table cellpadding="0" cellspacing="0" width="340" class="measurement_box">
+                                <tr height="22" bgcolor="#dfdfdf">
+                                    <td width="65" align="left">Size</td>
+                                    <?php foreach ($size as $key => $size_value) {
+                                        ?>
+                                        <td width="50"><?php echo $size_value ?></td>
+                                    <?php }
+                                    ?>
+                                </tr>
 
-                    <table cellpadding="0" cellspacing="0" width="340" class="measurement_box">
-                        <tr height="22" bgcolor="#dfdfdf">
-                            <td width="65" align="left">Size</td>
-                            <td width="50">S</td>
-                            <td width="50">l</td>
-                            <td width="50">m</td>
-                            <td width="50">xl</td>
-                            <td width="50">xxl</td>
-                            <td width="50">3xl</td>
-                        </tr>
-                        <tr height="22" bgcolor="#fff">
-                            <td style="border-bottom:solid 1px #CCC;" width="65" align="center">Length </td>
-                            <td style="border-bottom:solid 1px #CCC;" width="65" align="center">70</td>
-                            <td style="border-bottom:solid 1px #CCC;" width="65" align="center">72</td>
-                            <td style="border-bottom:solid 1px #CCC;" width="65" align="center">74</td>
-                            <td style="border-bottom:solid 1px #CCC;" width="65" align="center">76</td>
-                            <td style="border-bottom:solid 1px #CCC;" width="65" align="center">78</td>
-                            <td style="border-bottom:solid 1px #CCC;" width="65" align="center">80</td>
-                        </tr>
-                        <tr height="22" bgcolor="#fff">
-                            <td style="border-bottom:solid 1px #CCC;" width="65" align="left">Chest </td>
-                            <td style="border-bottom:solid 1px #CCC;" width="65" align="center">49</td>
-                            <td style="border-bottom:solid 1px #CCC;" width="65" align="center">52</td>
-                            <td style="border-bottom:solid 1px #CCC;" width="65" align="center">55</td>
-                            <td style="border-bottom:solid 1px #CCC;" width="65" align="center">58</td>
-                            <td style="border-bottom:solid 1px #CCC;" width="65" align="center">60</td>
-                            <td style="border-bottom:solid 1px #CCC;" width="65" align="center">62</td>
-                        </tr>  
-                        <tr height="22" bgcolor="#fff">
-                            <td width="65" align="left">Sleeve </td>
-                            <td width="50">20</td>
-                            <td width="50">21</td>
-                            <td width="50">22</td>
-                            <td width="50">23</td>
-                            <td width="50">24</td>
-                            <td width="50">25</td>
-                        </tr>                                                                        
-                    </table>
+                                <?php foreach ($value['measurement_table'] as $key => $value) { ?>
+                                    <tr height="22" bgcolor="#fff">
+                                        <td style="border-bottom:solid 1px #CCC;" width="65" align="center"><?php echo $value['name'] ?> </td>
+                                        <?php foreach ($value[$value['name']] as $key => $size_value) { ?>
+                                            <td style="border-bottom:solid 1px #CCC;" width="65" align="center"><?php echo $size_value ?></td>
+                                        <?php } ?>
+                                    </tr>
 
+
+                                <?php } ?>
+                                </table>
+                            </div>
+                        <?php }
+                        ?>
+
+
+                    </div> 
 
 
                 </div>
             </div>
+
+            <div >
+                <?php echo $products_data['descriptions']; ?>
+            </div>
+
         </div>
+    </section>
+
+    <?php
+    $this->load->view('SIATEX/_blocks/footer');
+    echo js('siatex/front/products');
+
+    function getChild($root, $lavel) {
+        ?>
+
+
+        <?php foreach ($root as $key => $products_category) { ?>
+            <li>
+                <ul id="xtraMenu<?php echo $lavel ?>">
+                    <?php
+                    if (!empty($products_category['children'])) {
+                        ?>
+                        <h4 class="head"><a><?php echo $products_category['name']; ?></a></h4>
+                                <?php
+                                if (!empty($products_category['products'])) {
+                                    getProducts($products_category['products']);
+                                }
+                                getChild($products_category['children'], $lavel++);
+                            } else {
+                                ?>
+                        <a><?php echo $products_category['name']; ?></a> 
+                        <?php
+                        if (!empty($products_category['products'])) {
+                            getProducts($products_category['products']);
+                        }
+                    }
+                    ?>
+                </ul>
+            </li>
+
+
+        <?php } ?>
 
 
 
-    </div>
-</section>
+        <?php
+    }
 
-<?php $this->load->view('SIATEX/_blocks/footer') ?>
+    function getProducts($products) {
+        foreach ($products as $key => $product) {
+            ?>
+            <li><a  href="<?php echo site_url('products/' . $product['slug']); ?>"><?php echo $product['item_name']; ?></a></li>
+
+            <?php
+        }
+    }
+    ?>

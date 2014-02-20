@@ -23,13 +23,13 @@
                 }
                 ?>">
                           <?php
-                          echo css('siatex/style,siatex/screen') . css($css);
+                          echo css('siatex/style,no-theme/jquery-ui-1.10.4.custom,siatex/screen,siatex/menu') . css($css);
                           ?>
 
 
                     <link href='http://fonts.googleapis.com/css?family=News+Cycle|Anaheim|Open+Sans+Condensed:300' rel='stylesheet' type='text/css'/>
-                    <script type="text/javascript" src="fuel/modules/fuel/assets/js/jquery/jquery.js"></script>	
-
+                    <script type="text/javascript" src="/fuel/modules/fuel/assets/js/jquery/jquery.js"></script>	
+                    <?php echo js('jquery-ui-1.10.4.custom,siatex/front/accordion'); ?>
                     </head>
 
                     <body>

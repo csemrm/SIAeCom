@@ -8,14 +8,18 @@ class products_categories_model extends Base_module_model {
 
     public $required = array('name');
     public $unique_fields = array('name');
+    public $foreign_keys = array('parent_id' => array('products_categories_model'));
+    protected $_parent_model = 'products_categories_model'; // the name of the parent model
 
     function __construct() {
         parent::__construct('products_categories');
+
+        $this->load_model(array('products_model'));
     }
 
     function list_items($limit = NULL, $offset = NULL, $col = 'name', $order = 'asc') {
-
-        $this->db->select('id, name , is_active as Active ', FALSE);
+        $this->db->join('products_categories as p', 'p.id = products_categories.parent_id', 'left');
+        $this->db->select('products_categories.id, products_categories.name ,p.name as p_name , products_categories.is_active as Active ', FALSE);
         $data = parent::list_items($limit, $offset, $col, $order);
         foreach ($data as $key => $value) {
 
@@ -27,11 +31,44 @@ class products_categories_model extends Base_module_model {
         return $data;
     }
 
-    function categories_list($limit = NULL, $offset = NULL, $col = 'name', $order = 'asc') {
+    public function tree($just_published = FALSE) {
+        $return = array();
+        $where = ($just_published) ? array('is_active' => '1') : array();
+        $categories = $this->find_all_array($where);
+        foreach ($categories as $category) {
+            $attributes = ((isset($category['is_active']) AND $category['is_active'] == 'no')) ? array('class' => 'unpublished', 'title' => 'unpublished') : NULL;
+            $return[] = array('id' => $category['id'], 'label' => $category['name'], 'parent_id' => $category['parent_id'], 'location' => fuel_url('products_categories/edit/' . $category['id']), 'attributes' => $attributes);
+        }
+        return $return;
+    }
 
-        $data = parent::list_items($limit, $offset, $col, $order);
+    function categories_list($where = array(), $order = NULL, $limit = NULL, $offset = NULL) {
+        $where['parent_id'] = 0;
+        $data = $this->get_children($where, $order, $limit, $offset);
+
+
 
         return $data;
+    }
+
+    public function context_options_list() {
+        $this->db->group_by('context');
+        return parent::options_list('context', 'context');
+    }
+
+    public function get_children($where = array(), $order = NULL, $limit = NULL, $offset = NULL) {
+
+        $children = $this->products_categories_model->find_all_array($where, $order, $limit, $offset);
+
+        foreach ($children as $key => $value) {
+
+            $getchild = $this->get_children(array('parent_id' => $value['id']));
+            if (!empty($getchild)) {
+                $children[$key]['children'] = $getchild;
+            }
+            $children[$key]['products'] = $this->products_model->find_all_array(array('product_categories_id' => $value['id']));
+        }
+        return $children;
     }
 
     function form_fields($values = null) {
@@ -40,6 +77,11 @@ class products_categories_model extends Base_module_model {
         $user = $CI->fuel_auth->user_data();
         $yes = lang('form_enum_option_yes');
         $no = lang('form_enum_option_no');
+        $fields['name']['order'] = 1;
+        $fields['slug']['order'] = 2;
+        $fields['parent_id']['order'] = 3;
+        $fields['precedence']['order'] = 4;
+        $fields['is_active']['order'] = 5;
 
         $fields['created_at']['type'] = 'hidden';
         $fields['updated_at']['type'] = 'hidden';

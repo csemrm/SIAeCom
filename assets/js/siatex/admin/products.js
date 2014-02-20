@@ -50,7 +50,8 @@
                         $('#products_measurement_table_' + index + '_chest').val(products_measurement_table.chest);
                         $('#products_measurement_table_' + index + '_sleeve').val(products_measurement_table.sleeve);
                         $('#products_measurement_table_' + index + '_price').val(products_measurement_table.price);
-                        $('#products_measurement_table_' + index + '_id').val(products_measurement_table.id);
+                        $('#products_measurement_table_' + index + '_id').val(products_measurement_table.id); 
+                        $('#products_measurement_table_' + index + '_black_price').val(products_measurement_table.black_price);
                     }
                 }
             });

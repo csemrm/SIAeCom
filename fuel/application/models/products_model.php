@@ -17,8 +17,8 @@ class products_model extends Base_module_model {
     }
 
     function list_items($limit = NULL, $offset = NULL, $col = 'item_name', $order = 'asc') {
-
-        $this->db->select('id, item_name , is_active as Active ', FALSE);
+        $this->db->join('products_categories', 'products_categories.id = products.product_categories_id', 'left');
+        $this->db->select('products.id, products.item_name ,products_categories.name as Category_Name, products.is_active as Active ', FALSE);
         $data = parent::list_items($limit, $offset, $col, $order);
         foreach ($data as $key => $value) {
 
@@ -105,7 +105,8 @@ class products_model extends Base_module_model {
                 'length' => array('type' => 'number', 'row_class' => 'products_measurement_table_length', 'negative' => TRUE, 'decimal' => TRUE),
                 'chest' => array('type' => 'number', 'row_class' => 'products_measurement_table_chest', 'negative' => TRUE, 'decimal' => TRUE),
                 'sleeve' => array('type' => 'number', 'row_class' => 'products_measurement_table_sleeve', 'negative' => TRUE, 'decimal' => TRUE),
-                'price' => array('type' => 'number', 'row_class' => 'products_measurement_table_price'),
+                'price' => array('type' => 'number', 'label'=>'Color Price','row_class' => 'products_measurement_table_price'),
+                'black_price' => array('type' => 'number',  'row_class' => 'products_measurement_table_price'),
             ),
             'form_builder_params' => array('render_format' => 'divs')
         );
@@ -382,6 +383,10 @@ class products_model extends Base_module_model {
 
         $return = parent::options_list($key, $val, $where, $order);
         return $return;
+    }
+
+    function get_products($product_id) {
+        
     }
 
 }

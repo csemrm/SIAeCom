@@ -55,7 +55,7 @@
 <!--Footer-->
 
 </div>
-<?php echo js('jquery,main') . js($js); ?>
+<?php echo js('main,siatex/front/menu') . js($js); ?>
 </body>
 </html>
 

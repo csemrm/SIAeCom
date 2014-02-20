@@ -55,3 +55,4 @@ include(MODULES_PATH.'/fuel/config/fuel_routes.php');
 
 
 $route['categories/(:any)'] = "categories/index/$1";
+$route['products/(:any)'] = "products/index/$1";

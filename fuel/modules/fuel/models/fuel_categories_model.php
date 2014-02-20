@@ -85,8 +85,8 @@ class Fuel_categories_model extends Base_module_model {
 	 */	
 	public function context_options_list()
 	{
-		$this->db->group_by('context');
-		return parent::options_list('context', 'context');
+		$this->db->group_by('parent_id');
+		return parent::options_list('parent_id', 'parent_id');
 	}
 
 	// --------------------------------------------------------------------
