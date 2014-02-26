@@ -1,9 +1,8 @@
 <?php $this->load->view('SIATEX/_blocks/header') ?>
 <?php if (empty($assets_path)) $assets_path = '/assets/'; ?>
 <?php
-
 //echo '<pre>';
-//print_r($products_categories);
+//print_r($products_data);
 //echo '</pre>';
 ?>
 <section id="main_inner">
@@ -59,13 +58,11 @@
                 <p><img src="<?php echo $assets_path; ?>/images/t-shirt_img_1.jpg" height="370" width="398" alt="img" /></p>
                 <div class="all_colour">
                     <ul>
-                        <li><img src="<?php echo $assets_path; ?>/images/color_1.jpg" height="20" width="35" alt="img" /></li>
-                        <li><img src="<?php echo $assets_path; ?>/images/color_2.jpg" height="20" width="35" alt="img" /></li>
-                        <li><img src="<?php echo $assets_path; ?>/images/color_3.jpg" height="20" width="35" alt="img" /></li>
-                        <li><img src="<?php echo $assets_path; ?>/images/color_4.jpg" height="20" width="35" alt="img" /></li>
-                        <li><img src="<?php echo $assets_path; ?>/images/color_5.jpg" height="20" width="35" alt="img" /></li>
-                        <li><img src="<?php echo $assets_path; ?>/images/color_6.jpg" height="20" width="35" alt="img" /></li>
-                        <li><img src="<?php echo $assets_path; ?>/images/color_7.jpg" height="20" width="35" alt="img" /></li>
+                        <?php
+                        foreach ($products_data['products_images'] as $images_key => $images) {
+                            ?>
+                            <li><img src="<?php echo $assets_path; ?>images/<?= $images['item_image']; ?>" height="20" width="35" alt="img" /></li>
+                        <?php } ?> 
                     </ul>
 
                 </div>
@@ -75,7 +72,7 @@
                     <ul>
                         <li><input type="text" placeholder="Quantity" name="quantity" id="item_qty-46"></li>
                         <li>
-                            <input type="button" onclick="return add_cart('46');" value="Add to Cart">
+                            <input type="button" class="add_cart" value="Add to Cart">
                         </li>
                     </ul>
                 </div>
@@ -93,22 +90,21 @@
                     <li>    <?php echo $products_data['style']; ?></li>
                     <li>Minimum Qty. 10 Pcs Per Color.</li>
                     <li>
-                        <!--select>
-                            <option>Select Size </option>
-                        <?php foreach ($size as $key => $value) {
-                            ?>
-                                                                                                                                                    <option value="<?php echo $key ?>"><?php echo $value ?></option>
-                        <?php }
-                        ?>
-                        </select-->
+                        <select>
+                            <option>Select Color </option>
+                            <option value="color">Color</option>
+                            <option value="black_white">Black/White</option>
+                        </select>
 
                     </li>
 
                     <li>
                         <br><select name="select_type" id="select_type">
-                            <?php foreach ($type as $key => $value) {
+                            <?php
+                            $key = 0;
+                            foreach ($type as $value) {
                                 ?>
-                                <option value="<?php echo $key ?>"><?php echo $value['name'] ?></option>
+                                <option value="<?php echo $key++ ?>"><?php echo $value['name'] ?></option>
                             <?php }
                             ?>
                         </select>
@@ -117,26 +113,42 @@
                 </ul>
                 <br>
                 <h3 class="price">Price  </h3>
-                <p class="measurement2">Color : <span id="color_price">$25.00</span>  </p>
-                <p class="measurement2">Black/White : <span id="color_price">$25.00</span>  </p>
+                <?php
+                $i = 0;
+                foreach ($products_price as $key => $price) :
+                    ?>
+                    <div class="<?php echo 'hide' ?>" id="products_price<?= $i ?>">
+                        <p class="measurement2">Color : <span id="color_price"> <?php echo $price['price'] ?> </span>  </p>
+                        <p class="measurement2">Black/White : <span id="color_price"><?php echo $price['black_price'] ?></span>  </p>
+                    </div>
+                    <?php
+                    $i++;
+                endforeach;
+                ?>
                 <p class="measurement2"><strong>Measurement</strong></p>
                 <div id="tabs" class="measurement_tab">
 
                     <ul>
-                        <?php foreach ($type as $key => $value) {
+                        <?php
+                        $key = 0;
+                        foreach ($type as $value) {
+                            $key++;
                             ?>
                             <li><a href="#tabs-<?php echo $key ?>" ><?php echo $value['name'] ?></a></li>
                         <?php }
                         ?>
 
                     </ul>
-                    <?php foreach ($type as $key => $value) {
+                    <?php
+                    $type_key = 0;
+                    foreach ($type as $value) {
+                        $type_key++;
                         ?>
-                        <div id="tabs-<?php echo $key ?>" class="measurement" >
+                        <div id="tabs-<?php echo $type_key ?>" class="measurement" >
                             <table cellpadding="0" cellspacing="0" width="340" class="measurement_box">
                                 <tr height="22" bgcolor="#dfdfdf">
                                     <td width="65" align="left">Size</td>
-                                    <?php foreach ($size as $key => $size_value) {
+                                    <?php foreach ($size as $size_value) {
                                         ?>
                                         <td width="50"><?php echo $size_value ?></td>
                                     <?php }
@@ -146,78 +158,78 @@
                                 <?php foreach ($value['measurement_table'] as $key => $value) { ?>
                                     <tr height="22" bgcolor="#fff">
                                         <td style="border-bottom:solid 1px #CCC;" width="65" align="center"><?php echo $value['name'] ?> </td>
-                                        <?php foreach ($value[$value['name']] as $key => $size_value) { ?>
+                                        <?php foreach ($value[$value['name']] as $size_value) { ?>
                                             <td style="border-bottom:solid 1px #CCC;" width="65" align="center"><?php echo $size_value ?></td>
                                         <?php } ?>
                                     </tr>
 
 
                                 <?php } ?>
-                                </table>
-                            </div>
-                        <?php }
-                        ?>
+                            </table>
+                        </div>
+                    <?php }
+                    ?>
 
 
-                    </div> 
+                </div> 
 
 
-                </div>
             </div>
-
-            <div >
-                <?php echo $products_data['descriptions']; ?>
-            </div>
-
         </div>
-    </section>
+
+        <div >
+            <?php echo $products_data['descriptions']; ?>
+        </div>
+
+    </div>
+</section>
+
+<?php
+$this->load->view('SIATEX/_blocks/footer');
+echo js('siatex/front/products');
+
+function getChild($root, $lavel) {
+    ?>
+
+
+    <?php foreach ($root as $key => $products_category) { ?>
+        <li>
+            <ul id="xtraMenu<?php echo $lavel ?>">
+                <?php
+                if (!empty($products_category['children'])) {
+                    ?>
+                    <h4 class="head"><a><?php echo $products_category['name']; ?></a></h4>
+                            <?php
+                            if (!empty($products_category['products'])) {
+                                getProducts($products_category['products']);
+                            }
+                            getChild($products_category['children'], $lavel++);
+                        } else {
+                            ?>
+                    <a><?php echo $products_category['name']; ?></a> 
+                    <?php
+                    if (!empty($products_category['products'])) {
+                        getProducts($products_category['products']);
+                    }
+                }
+                ?>
+            </ul>
+        </li>
+
+
+    <?php } ?>
+
+
 
     <?php
-    $this->load->view('SIATEX/_blocks/footer');
-    echo js('siatex/front/products');
+}
 
-    function getChild($root, $lavel) {
+function getProducts($products) {
+    foreach ($products as $key => $product) {
         ?>
-
-
-        <?php foreach ($root as $key => $products_category) { ?>
-            <li>
-                <ul id="xtraMenu<?php echo $lavel ?>">
-                    <?php
-                    if (!empty($products_category['children'])) {
-                        ?>
-                        <h4 class="head"><a><?php echo $products_category['name']; ?></a></h4>
-                                <?php
-                                if (!empty($products_category['products'])) {
-                                    getProducts($products_category['products']);
-                                }
-                                getChild($products_category['children'], $lavel++);
-                            } else {
-                                ?>
-                        <a><?php echo $products_category['name']; ?></a> 
-                        <?php
-                        if (!empty($products_category['products'])) {
-                            getProducts($products_category['products']);
-                        }
-                    }
-                    ?>
-                </ul>
-            </li>
-
-
-        <?php } ?>
-
-
+        <li><a  href="<?php echo site_url('products/' . $product['slug']); ?>"><?php echo $product['item_name']; ?></a></li>
 
         <?php
     }
-
-    function getProducts($products) {
-        foreach ($products as $key => $product) {
-            ?>
-            <li><a  href="<?php echo site_url('products/' . $product['slug']); ?>"><?php echo $product['item_name']; ?></a></li>
-
-            <?php
-        }
-    }
-    ?>
+}
+?>

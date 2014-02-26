@@ -137,16 +137,16 @@ body{
     color:#f05247;
 }
 .home_icon{
-    background:url(images/home_icon.png);
+    background:url(images/home_icon.png) center top ;
 }
 .products{
-    background:url(images/products_icon.png);
+    background:url(images/products_icon.png) center top ;
 }
 .services{
-    background:url(images/services_icon.png);
+    background:url(images/services_icon.png) center top ;
 }
 .contact{
-    background:url(images/contact_icon.png);
+    background:url(images/contact_icon.png) center top ;
 }
 /********************header*/
 
@@ -521,7 +521,7 @@ ol li:after {
     text-decoration:none;
 }
 .products_left_icon ul li ul li{
-     padding:5px 0 5px 10px;
+    padding:5px 0 5px 10px;
 }
 .products_left_icon ul li ul li a{
     color:#a3a3a3;
@@ -780,6 +780,14 @@ ol li:after {
     margin-bottom:8px;
     text-align:center;
     padding-top:15px;
+}
+
+
+.hide{
+    display: none;
+}
+.show{
+    display: block;
 }
 /********************************Fotter*/
 
