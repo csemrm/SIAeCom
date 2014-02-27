@@ -461,7 +461,7 @@ ol li:after {
     background:#ee372c;
     transition: all 500ms ease 0s;
 }
-#item_qty-46{
+#quantity{
     height:25px; 
     color:#666; 
     width:100px; 

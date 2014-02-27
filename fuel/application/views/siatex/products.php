@@ -70,11 +70,13 @@
 
                 <div class="add_to_cart">
                     <ul>
-                        <li><input type="text" placeholder="Quantity" name="quantity" id="item_qty-46"></li>
+                        <li><input type="text" placeholder="Quantity" maxlength="3" min="10"  name="quantity" id="quantity"></li>
                         <li>
-                            <input type="button" class="add_cart" value="Add to Cart">
+                            <input type="button" class="add_cart" value="Add to Cart" >
+                            <input type="hidden" id="products_id"   value="<?= $products_data['id']; ?>">
                         </li>
                     </ul>
+                    <div id="cart_error" > </div>
                 </div>
 
 <!--   <input class="add_to_cart_button" value="Add to Cart" type="submit">-->
@@ -90,10 +92,10 @@
                     <li>    <?php echo $products_data['style']; ?></li>
                     <li>Minimum Qty. 10 Pcs Per Color.</li>
                     <li>
-                        <select>
+                        <select name="color_type" id="color_type">
                             <option>Select Color </option>
-                            <option value="color">Color</option>
-                            <option value="black_white">Black/White</option>
+                            <option value="color" label="color">Color</option>
+                            <option value="black_white" label="black_white">Black/White</option>
                         </select>
 
                     </li>
@@ -104,7 +106,7 @@
                             $key = 0;
                             foreach ($type as $value) {
                                 ?>
-                                <option value="<?php echo $key++ ?>"><?php echo $value['name'] ?></option>
+                                <option label="<?= $value['name'] ?>" value="<?php echo $key++ ?>"><?php echo $value['name'] ?></option>
                             <?php }
                             ?>
                         </select>
@@ -118,8 +120,8 @@
                 foreach ($products_price as $key => $price) :
                     ?>
                     <div class="<?php echo 'hide' ?>" id="products_price<?= $i ?>">
-                        <p class="measurement2">Color : <span id="color_price"> <?php echo $price['price'] ?> </span>  </p>
-                        <p class="measurement2">Black/White : <span id="color_price"><?php echo $price['black_price'] ?></span>  </p>
+                        <p class="measurement2">Color : <span id="color_price<?= $i ?>"> <?php echo $price['price'] ?> </span>  </p>
+                        <p class="measurement2">Black/White : <span id="black_white<?= $i ?>"><?php echo $price['black_price'] ?></span>  </p>
                     </div>
                     <?php
                     $i++;
@@ -186,7 +188,7 @@
 
 <?php
 $this->load->view('SIATEX/_blocks/footer');
-echo js('siatex/front/products');
+echo js('siatex/front/products,siatex/front/addtocart');
 
 function getChild($root, $lavel) {
     ?>

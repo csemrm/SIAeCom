@@ -6,12 +6,14 @@ class products extends CI_Controller {
 
         parent::__construct();
         $this->load->model(array('products_categories_model', 'products_color_table_model', 'products_images_model', 'products_measurement_table_model', 'products_model'));
+
+       
     }
 
     function index($slug = null) {
         $data = array();
-        $data['css'] = '';
-        $data['js'] = '';
+        $data['css'] = 'siatex/addtocart/addtocart';
+        $data['js'] = 'addtocart';
         $products = array();
         if ($slug) {
             $products = $this->products_model->find_one_array(array('slug' => $slug));

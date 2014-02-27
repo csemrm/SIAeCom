@@ -105,8 +105,8 @@ class products_model extends Base_module_model {
                 'length' => array('type' => 'number', 'row_class' => 'products_measurement_table_length', 'negative' => TRUE, 'decimal' => TRUE),
                 'chest' => array('type' => 'number', 'row_class' => 'products_measurement_table_chest', 'negative' => TRUE, 'decimal' => TRUE),
                 'sleeve' => array('type' => 'number', 'row_class' => 'products_measurement_table_sleeve', 'negative' => TRUE, 'decimal' => TRUE),
-                'price' => array('type' => 'number', 'label'=>'Color Price','row_class' => 'products_measurement_table_price'),
-                'black_price' => array('type' => 'number',  'row_class' => 'products_measurement_table_price'),
+                'price' => array('type' => 'number', 'label' => 'Color Price', 'row_class' => 'products_measurement_table_price'),
+                'black_price' => array('type' => 'number', 'row_class' => 'products_measurement_table_price'),
             ),
             'form_builder_params' => array('render_format' => 'divs')
         );
@@ -386,7 +386,62 @@ class products_model extends Base_module_model {
     }
 
     function get_products($product_id) {
-        
+
+
+        $products = $this->products_model->find_one_array(array('id' => $product_id));
+
+
+
+        $products['products_images'] = $this->products_images_model->find_all_array(array('products_id' => $products['id']));
+        $products['products_color'] = $this->products_color_table_model->find_all_array(array('products_id' => $products['id']));
+        $products_measurement = $this->products_measurement_table_model->find_all_array(array('products_id' => $products['id']));
+
+        $param = array('Length', 'Chest', 'Sleeve');
+        $type = array();
+        $size = array();
+
+
+        foreach ($products_measurement as $key => $measurement) {
+            if (!in_array($measurement['type'], $type)) {
+                $type[$key] = $measurement['type'];
+            }
+            if (!in_array($measurement['size'], $size)) {
+                $size[$key] = $measurement['size'];
+            }
+        }
+
+        $type1 = array();
+        $products_price = array();
+        foreach ($type as $key => $value) {
+            $type1[$key]['name'] = $value;
+            $pval = array();
+            foreach ($param as $param_key => $param_value) {
+                $chest = array();
+                $measurement_key = 0;
+                foreach ($products_measurement as $measurement) {
+                    if ($value === $measurement['type']) {
+                        $chest[$measurement_key++] = $measurement[lcfirst($param_value)];
+                        $products_price[$value] = array(
+                            'price' => $measurement['price'],
+                            'black_price' => $measurement['black_price'],
+                        );
+                    }
+                }
+                $pval[$param_key][$param_value] = $chest;
+
+
+
+                $pval[$param_key]['name'] = $param_value;
+                $type1[$key]['measurement_table'] = $pval;
+            }
+        }
+
+        $products['types'] = $type1;
+        $products['sizes'] = $size;
+
+
+        $products['products_price'] = $products_price;
+        return $products;
     }
 
 }

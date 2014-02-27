@@ -54,7 +54,7 @@ $autoload['packages'] = array(
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('fuel/asset', 'fuel/fuel');
+$autoload['libraries'] = array('fuel/asset', 'fuel/fuel', 'cart');
 
 
 /*
@@ -66,7 +66,7 @@ $autoload['libraries'] = array('fuel/asset', 'fuel/fuel');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('my', 'url', 'string', 'language', 'date', 'html', 'fuel/asset', 'fuel/fuel', 'fuel/utility', 'fuel/validator');
+$autoload['helper'] = array('form','my', 'url', 'string', 'language', 'date', 'html', 'fuel/asset', 'fuel/fuel', 'fuel/utility', 'fuel/validator');
 
 
 /*

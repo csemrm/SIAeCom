@@ -27,7 +27,7 @@
                           ?>
 
 
-                   <script type="text/javascript" src="/fuel/modules/fuel/assets/js/jquery/jquery.js"></script>	
+                    <script type="text/javascript" src="/fuel/modules/fuel/assets/js/jquery/jquery.js"></script>	
                     <?php echo js('jquery-ui-1.10.4.custom,siatex/front/accordion'); ?>
                     </head>
 
@@ -56,6 +56,7 @@
                                             <li><a title="twitter" href="#"><img src="<?php echo $assets_path; ?>images/twitter.png" alt="twitter" width="19" height="13" border="0" /></a></li>
                                             <li><a title="linkedin" href="#"><img src="<?php echo $assets_path; ?>images/linkedin.png" alt="linkedin" width="13" height="13" border="0" /></a></li>
                                             <li><a title="rss" href="#"><img src="<?php echo $assets_path; ?>images/rss.png" alt="rss" width="13" height="12" border="0" /></a></li>
+                                            <li><a title="rss" href="<?= site_url('AddToCart'); ?>"><img src="<?php echo $assets_path; ?>images/cart.png" alt="cart" width="13" height="12" border="0" /> cart (<?= count($this->cart->contents()) ? count($this->cart->contents()) : 0 ?>)</a></li>
                                         </ul>
                                     </div>
                                 </div>

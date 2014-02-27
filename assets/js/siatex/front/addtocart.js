@@ -2,34 +2,55 @@
 {
 
     $(document).ready(function() {
-        select_type = $('#select_type').val();
-        $("#tabs").tabs({
-            active: select_type,
-            activate: function(event, ui) {
-                // alert((ui.newPanel.selector+ui.oldPanel.selector));
+        $('.add_cart').click(function() {
+            products_id = $('#products_id').val();
+            quantity = $('#quantity').val();
+            color_type = $('select#color_type option:selected').text();
+            select_type = $('select#select_type option:selected').text();
+            select_type_val = $('#select_type').val();
 
-                previous_val = ((ui.oldPanel.selector).split('-')[1] - 1);
+            color_price = $('span#color_price' + select_type_val).text();
+            black_white = $('span#black_white' + select_type_val).text();
 
-                selected_val = ((ui.newPanel.selector).split('-')[1] - 1);
-                //alert(previous_val + ' selected_val'+ selected_val);
-                $('#products_price' + previous_val).removeClass('show');
-                $('#products_price' + previous_val).addClass('hide');
+            color_type_error = quantity_error = '';
+            price = 0;
+            if ($.trim(color_type) == 'Select Color') {
+                color_type_error = 'Select Color <br/>';
 
-                $('#products_price' + selected_val).removeClass('hide');
-                $('#products_price' + selected_val).addClass('show');
+            } else if (color_type == 'Color') {
+                price = color_price;
+            } else {
+                price = black_white;
             }
-        });
 
-        $('#products_price' + select_type).removeClass('hide');
-        $('#products_price' + select_type).addClass('show');
+            if (quantity < 10) {
+                quantity_error = 'Minimum Qty. 10 Pcs Per Color';
+            }
+            if (color_type_error + quantity_error) {
+                $('#cart_error').empty().html(color_type_error + quantity_error);
+                return false;
+            } else {
+//                'id' = > 'sku_123ABC',
+//                        'qty' = > 133,
+//                        'price' = > 39.95,
+//                        'name' = > 'T-Shirt',
+//                        'options' = > array('Size' = > 'L', 'Color' = > 'Red')
 
-        $('#select_type').change(function() {
+                $.ajax({
+                    type: "POST",
+                    url: "/index.php/addtocart/insert",
+                    data: 'products_id= ' + products_id + '&quantity= ' + quantity + '&color_type= ' + color_type + ' &select_type= ' + select_type + ' &price= ' + price,
+//                    dataType: 'json',
+                    success: function(msg) {
+                        if (msg) {
+                            $('#cart_error').empty().html('success');
+                        } else {
+                            $('#cart_error').empty().html('fail to add');
+                        }
+                    }
+                });
+            }
 
-            val = $(this).val();
-            $("#tabs").tabs({active: val});
-
-
-            select_type = val;
         });
     });
 
