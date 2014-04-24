@@ -1,23 +1,40 @@
-<?php $this->load->view('SIATEX/_blocks/header') ?>
+<?php $this->load->view('siatex/_blocks/header') ?>
 
-<section id="services">
-    <aside id="services_left_box"> 
-        <div class="contact_box">
-            <form method="post" action="home/contact">
-                <ul>
-                    <li><input class="contact_name" placeholder="NAME*" type="text" /></li>
-                    <li><input class="contact_name" placeholder="EMAIL*" type="text" /></li>
-                    <li><input class="contact_name" placeholder="SUBJECT *" type="text" /></li>
-                    <li><textarea name="comments" rows="8" col="50" placeholder="MESSAGE*" class="contact_box2"></textarea></li>
-                    <li><input type="submit" name="submit" value="SUBMIT" id="form_submit"></li>
-                </ul>
-            </form>
-            <p class="contact_map"><?php echo fuel_var('google_map','<img src="/assets/images/map.jpg" height="180" width="573" alt="map" />'); ?></p>
-        </div>
-    </aside>
-    <aside id="services_right_box" class=""> 
-        <?php echo fuel_var('body'); ?>
-    </aside>
+<section class="body_contener">
+
+    <div class="products_box_contener">
+
+
+
+        <div class="login">
+
+            <div class="contact_us_page"> 
+
+                <div class="contact_form">
+                    <div class="login_box">
+                        <h2>Contact Us</h2>
+                        <form method="post" action="home/contact">
+                            <ul>
+                                <li>Name </li>
+                                <li><input type="text"></li>
+                                <li>Email Address </li>
+                                <li><input type="text"></li>
+                                <li>Message  </li>
+                                <li><textarea></textarea></li>
+                                     <li><input type="submit" name="submit" value="SUBMIT" id="form_submit"/></li>
+                                </ul>
+                            </form>
+                            </div>
+                            		 </div>
+                           
+                                    <div class="contact_text">
+                    <?php echo fuel_var('body'); ?>
+                                    </div>
+                                </div>
+                          
+                    </div>
+					
+				</div>
 </section>
 
-<?php $this->load->view('SIATEX/_blocks/footer') ?>
+<?php $this->load->view('siatex/_blocks/footer') ?>

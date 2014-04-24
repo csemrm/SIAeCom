@@ -44,6 +44,9 @@
                     success: function(msg) {
                         if (msg) {
                             $('#cart_error').empty().html('success');
+                            setTimeout(function() {
+                                document.location.href = '/index.php/addtocart/';
+                            }, 500);
                         } else {
                             $('#cart_error').empty().html('fail to add');
                         }

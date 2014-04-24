@@ -18,8 +18,8 @@
             }
             ?>">
                 <meta name="description" content="<?php
-                if (!empty($page_title)) {
-                    echo $page_title;
+                if (!empty($description)) {
+                    echo $description;
                 }
                 ?>">
                           <?php
@@ -33,50 +33,43 @@
 
                     <body>
 
-                        <div id="conten">
+                        <div id="conten" class="contener">
 
                             <!--Top Bar-->
 
-                            <div id="top_two_pix"></div>
-                            <div id="top_menu">
-                                <div class="top_menu_tex">
-                                    <div class="left_contact_icon">
-                                        <ul>
-                                            <li class="email_icon email_icon2"><a href="<?php echo site_url(); ?>">Home</a></li>
-                                            <li class="phone_icon email_icon1">+ 123 456 1789</li>
-                                              <!--<li class="phone_icon2">Language <select>
-                                              <option>English </option> 
-                                              <option>Italian</option>
-                                               </select></li>-->
-                                        </ul>
+                            <div class="header">
+                                <div class="header_conten">
+
+                                    <div class="logo">
+                                        <a title="Siatex" href="<?php echo site_url(); ?>"><img src="<?php echo $assets_path; ?>images/logo.png" height="139" width="213" alt="Siatex" border="0" /></a>
+                                       </div>
+                                    <div class="right_menu">
+                                        <div class="cart_menu">
+                                            <ul>
+                                                <!--li><a href="#">Login</a></li>
+                                                <li><a href="#">Sign Up</a></li-->
+                                                <li class="cart_bg"><span style="padding-left:18px;">Shopping Cart :</span><a href="<?= site_url('addtocart'); ?>"> ( <?= count($this->cart->contents()) ? count($this->cart->contents()) : 0 ?> items )</a></li>
+                                            </ul>
+                                            <div class="search_box"><input placeholder="Search" type="text"/> <input type="submit" value=""/></div>
+                                        </div>
+
+                                        <div class="home_menu">
+                                            <ul class="home_menu_list">
+                                                <li class="active"><a href="<?php echo site_url(); ?>">Home</a></li>
+                                                <li><a href="<?php echo site_url('products'); ?>">Products</a> </li>
+                                                <li><a href="<?php echo site_url('services'); ?>">services </a>  </li>
+                                                <li><a href="<?php echo site_url('contact'); ?>">Contact us</a> </li>
+                                                <li><a href="<?php echo site_url('about_us'); ?>">About Us</a></li>
+                                                <li>
+                                                    <img src="<?php echo $assets_path; ?>images/facebook.png" height="17" width="17" alt="facebook"/> 
+                                                    <img src="<?php echo $assets_path; ?>images/twitter.png" height="17" width="17" alt="facebook"/> 
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <div class="left_social_icon">
-                                        <ul>
-                                            <li><a title="facebook" href="#"><img src="<?php echo $assets_path; ?>images/facebook.png" alt="facebook" width="7" height="14" border="0" /></a></li>
-                                            <li><a title="twitter" href="#"><img src="<?php echo $assets_path; ?>images/twitter.png" alt="twitter" width="19" height="13" border="0" /></a></li>
-                                            <li><a title="linkedin" href="#"><img src="<?php echo $assets_path; ?>images/linkedin.png" alt="linkedin" width="13" height="13" border="0" /></a></li>
-                                            <li><a title="rss" href="#"><img src="<?php echo $assets_path; ?>images/rss.png" alt="rss" width="13" height="12" border="0" /></a></li>
-                                            <li><a title="rss" href="<?= site_url('AddToCart'); ?>"><img src="<?php echo $assets_path; ?>images/cart.png" alt="cart" width="13" height="12" border="0" /> cart (<?= count($this->cart->contents()) ? count($this->cart->contents()) : 0 ?>)</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!--Top Bar-->
-
-
-                            <!--Hader-->
-
-                            <div id="header_1">
-                                <div id="logo"><a title="Dutta Fashion" href="<?php echo site_url(); ?>"><img src="<?php echo $assets_path; ?>images/logo.png" alt="Dutta Fashion" width="192" height="126" border="0" /></a></div>
-                                <div id="right_menu">
-                                    <ul>
-                                        <li class="home_icon" ><a href="<?php echo site_url(); ?>"><span>Home</span></a></li>
-                                        <li class="products"><a href="<?php echo site_url('products'); ?>">Products</a></li>
-                                        <li class="services"><a href="<?php echo site_url('services'); ?>">services</a></li>
-                                        <li class="contact"><a href="<?php echo site_url('contact'); ?>">contact</a></li>
-                                    </ul>
 
                                 </div>
                             </div>
-                            <div id="body">
+                            <div id="body" class="body_contener">
+                                
+                                

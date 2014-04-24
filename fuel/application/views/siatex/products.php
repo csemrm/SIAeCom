@@ -1,4 +1,4 @@
-<?php $this->load->view('SIATEX/_blocks/header') ?>
+<?php $this->load->view('siatex/_blocks/header') ?>
 <?php if (empty($assets_path)) $assets_path = '/assets/'; ?>
 <?php
 //echo '<pre>';
@@ -11,29 +11,17 @@
 
 
 
-        <div class="products_left_icon">
-            <h3>our Products</h3>
+        <div class="products_left_icon categories">
+            <h3>categories</h3>
             <ul id="theMenu">
                 <?php foreach ($products_categories as $key => $products_category) { ?>
                     <li class="parent_li">
-                        <ul id="xtraMenu1">
-                            <?php
-                            if (!empty($products_category['children'])) {
-                                ?>
-                                <h3 class="head"><a><?php echo $products_category['name']; ?></a></h3>
-                                <?php
-                                if (!empty($products_category['products'])) {
-                                    getProducts($products_category['products']);
-                                }
-                                getChild($products_category['children'], 2);
-                            } else {
-                                ?>
-                                <a><?php echo $products_category['name']; ?></a>
-                                <?php
-                                if (!empty($products_category['products'])) {
-                                    getProducts($products_category['products']);
-                                }
+                        <h3 class="head"><?php echo $products_category['name']; ?></h3>
+                        <ul id="xtraMenu1">    <?php
+                            if (!empty($products_category['products'])) {
+                                getProducts($products_category['products']);
                             }
+                            //getChild($products_category['children'], 2);
                             ?>
                         </ul>
                     </li>
@@ -47,61 +35,64 @@
         </div>
 
         <div class="products_center">
-            <div class="products_left_conten">
-                <ul class="products_left_conten_two">
-                    <li><a href="<?php echo base_url(); ?>"> Home</a></li>
-                    <li> > </li>
-                    <li>T-shirt</li>
-                    <li> > </li>
-                    <li><span>Tees</span></li>
-                </ul>
-                <p><img src="<?php echo $assets_path; ?>/images/t-shirt_img_1.jpg" height="370" width="398" alt="img" /></p>
-                <div class="all_colour">
-                    <ul>
-                        <?php
-                        foreach ($products_data['products_images'] as $images_key => $images) {
-                            ?>
-                            <li><img src="<?php echo $assets_path; ?>images/<?= $images['item_image']; ?>" height="20" width="35" alt="img" /></li>
-                        <?php } ?> 
-                    </ul>
 
-                </div>
+            <div class="products_images">
 
 
-                <div class="add_to_cart">
-                    <ul>
-                        <li><input type="text" placeholder="Quantity" maxlength="3" min="10"  name="quantity" id="quantity"></li>
-                        <li>
-                            <input type="button" class="add_cart" value="Add to Cart" >
-                            <input type="hidden" id="products_id"   value="<?= $products_data['id']; ?>">
-                        </li>
-                    </ul>
+                <div class="products_images_here">
+                    <p><img src="<?= $assets_path ?>images/products_pic_4.png" height="400" width="364" alt="img"></p>
+                    <input type="hidden" id="products_id"   value="<?= $products_data['id']; ?>"/>
+                    <input type="image" src="<?= $assets_path ?>images/add_to_cart.png" class="add_cart" value="Add to Cart" />
                     <div id="cart_error" > </div>
                 </div>
 
-<!--   <input class="add_to_cart_button" value="Add to Cart" type="submit">-->
-
             </div>
-            <div class="products_right_conten">
-                <h3> <?php echo $products_data['item_name']; ?></h3>
-                <ul class="products_right_conten_list">
+            <div class="products_details">
+                <h2> <?php echo $products_data['item_name']; ?></h2>
+                <ul class="products_details_list">
                     <li> <?php echo $products_data['fabrics']; ?></li>
                     <li>  <?php echo $products_data['weight']; ?></li>
                     <li>   <?php echo $products_data['quality']; ?></li>
                     <li>    <?php echo $products_data['standard']; ?></li>
                     <li>    <?php echo $products_data['style']; ?></li>
                     <li>Minimum Qty. 10 Pcs Per Color.</li>
-                    <li>
-                        <select name="color_type" id="color_type">
+                </ul>
+                <div >
+                    <?php echo $products_data['descriptions']; ?>
+                </div>
+                <div class="products_details_text">
+                    <div class=""><h2>Price </h2></div>
+                    <?php
+                    $i = 0;
+                    foreach ($products_price as $key => $price) :
+                        ?>
+                        <div class="<?php echo 'hide' ?>" id="products_price<?= $i ?>">
+                            <p class="measurement2">Color : <span id="color_price<?= $i ?>"> <?php echo $price['price'] ?> </span>  </p>
+                            <p class="measurement2">Black/White : <span id="black_white<?= $i ?>"><?php echo $price['black_price'] ?></span>  </p>
+                        </div>
+                        <?php
+                        $i++;
+                    endforeach;
+                    ?>
+                </div>
+
+                <div class="products_details_text">
+                    <div class="price_name"><h2>Quantity </h2></div>
+                    <div class="price">  <input type="text" placeholder="Quantity" maxlength="3" min="10"  name="quantity" id="quantity"> </div>
+                </div>
+                <div class="products_details_text">
+                    <div class="price_name"><h2>Color </h2></div>
+                    <div class="price">  <select name="color_type" id="color_type">
                             <option>Select Color </option>
                             <option value="color" label="color">Color</option>
                             <option value="black_white" label="black_white">Black/White</option>
                         </select>
-
-                    </li>
-
-                    <li>
-                        <br><select name="select_type" id="select_type">
+                    </div>
+                </div>
+                <div class="products_details_text">
+                    <div class="price_name"><h2>Type </h2></div>
+                    <div class="price">
+                        <select name="select_type" id="select_type">
                             <?php
                             $key = 0;
                             foreach ($type as $value) {
@@ -110,24 +101,10 @@
                             <?php }
                             ?>
                         </select>
-
-                    </li>
-                </ul>
-                <br>
-                <h3 class="price">Price  </h3>
-                <?php
-                $i = 0;
-                foreach ($products_price as $key => $price) :
-                    ?>
-                    <div class="<?php echo 'hide' ?>" id="products_price<?= $i ?>">
-                        <p class="measurement2">Color : <span id="color_price<?= $i ?>"> <?php echo $price['price'] ?> </span>  </p>
-                        <p class="measurement2">Black/White : <span id="black_white<?= $i ?>"><?php echo $price['black_price'] ?></span>  </p>
                     </div>
-                    <?php
-                    $i++;
-                endforeach;
-                ?>
-                <p class="measurement2"><strong>Measurement</strong></p>
+                </div>
+
+                <div class="clearfix"><h2>Measurement </h2></div>
                 <div id="tabs" class="measurement_tab">
 
                     <ul>
@@ -147,12 +124,12 @@
                         $type_key++;
                         ?>
                         <div id="tabs-<?php echo $type_key ?>" class="measurement" >
-                            <table cellpadding="0" cellspacing="0" width="340" class="measurement_box">
+                            <table cellpadding="0" cellspacing="0"  class="measurement_box">
                                 <tr height="22" bgcolor="#dfdfdf">
                                     <td width="65" align="left">Size</td>
                                     <?php foreach ($size as $size_value) {
                                         ?>
-                                        <td width="50"><?php echo $size_value ?></td>
+                                        <td ><?php echo $size_value ?></td>
                                     <?php }
                                     ?>
                                 </tr>
@@ -174,20 +151,30 @@
 
 
                 </div> 
+                <?php if ($products_data['products_color']) { ?>
+                    <div class="products_details_text">
+                        <div class=""><h2>Color </h2></div>
 
+                        <?php
+                        //print_r($products_data['products_color']);
+                        foreach ($products_data['products_color'] as $key => $color) {
+                            ?>
+                            <div style="background: <?= $color['color_code'] ?>; width: 50px; height: 20px; float: left; margin-right: 10px" > <img src="<?= $assets_path ?>images/<?= $color['color_image'] ?>" height="20" width="50" alt="" /></div>
+                        <?php } ?>
 
+                    </div>
+                <?php } ?>
             </div>
         </div>
 
-        <div >
-            <?php echo $products_data['descriptions']; ?>
-        </div>
-
     </div>
+
+
+
 </section>
 
 <?php
-$this->load->view('SIATEX/_blocks/footer');
+$this->load->view('siatex/_blocks/footer');
 echo js('siatex/front/products,siatex/front/addtocart');
 
 function getChild($root, $lavel) {
@@ -234,4 +221,4 @@ function getProducts($products) {
         <?php
     }
 }
-?>
+?><?php echo js('siatex/front/menu') . js($js); ?>

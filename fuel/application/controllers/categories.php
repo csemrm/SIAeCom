@@ -20,7 +20,7 @@ class categories extends CI_Controller {
         $data['js'] = '';
         $data['products_categories'] = $this->products_categories_model->categories_list();
 
-        $this->load->view('SIATEX/products', $data);
+        $this->load->view('siatex/products', $data);
     }
 
 }

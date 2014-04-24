@@ -1,6 +1,6 @@
-<?php $this->load->view('SIATEX/_blocks/header') ?>
+<?php $this->load->view('siatex/_blocks/header') ?>
 
 <section id="main_inner">
 </section>
 
-<?php $this->load->view('SIATEX/_blocks/footer') ?>
+<?php $this->load->view('siatex/_blocks/footer') ?>

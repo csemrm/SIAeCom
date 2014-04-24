@@ -40,3 +40,8 @@ include_once(APPPATH.'../modules/fuel/config/fuel_constants.php');
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
+
+
+define('EMAILFROM', 'pranub@siatex.co');
+define('SENDERNAME', 'SiaTex');
+define('EMAILCC', 'pranub@siatex.co');
