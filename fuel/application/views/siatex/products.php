@@ -1,10 +1,6 @@
 <?php $this->load->view('siatex/_blocks/header') ?>
 <?php if (empty($assets_path)) $assets_path = '/assets/'; ?>
-<?php
-//echo '<pre>';
-//print_r($products_data);
-//echo '</pre>';
-?>
+
 <section id="main_inner">
 
     <div id="services">
@@ -12,7 +8,7 @@
 
 
         <div class="products_left_icon categories">
-            <h3>categories</h3>
+            <h3 class="title">categories</h3>
             <ul id="theMenu">
                 <?php foreach ($products_categories as $key => $products_category) { ?>
                     <li class="parent_li">
@@ -37,10 +33,17 @@
         <div class="products_center">
 
             <div class="products_images">
-
+                <ul>
+                    <li><a href="<?php echo site_url(); ?>">Home</a></li>
+                    <li> > </li>
+                    <li ><a href="<?php echo site_url('products'); ?>">Products</a></li>
+                </ul>
 
                 <div class="products_images_here">
-                    <p><img src="<?= $assets_path ?>images/products_pic_4.png" height="400" width="364" alt="img"></p>
+                    <p>
+                        <?php $products_images = is_array($products_data['products_images']) && count($products_data['products_images']) ? $assets_path . 'images/' . $products_data['products_images'][0]['item_image'] : $assets_path . 'images/products_pic_4.png'; ?>
+
+                        <img src="<?= $products_images ?>" height="400" width="364" alt="img"></p>
                     <input type="hidden" id="products_id"   value="<?= $products_data['id']; ?>"/>
                     <input type="image" src="<?= $assets_path ?>images/add_to_cart.png" class="add_cart" value="Add to Cart" />
                     <div id="cart_error" > </div>

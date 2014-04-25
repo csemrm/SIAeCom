@@ -8,7 +8,7 @@ class AddToCart extends CI_controller {
 
         parent::__construct();
         $this->CI = & get_instance();
-        $this->load->model(array('products_model'));
+        $this->load->model(array('products_model', 'countries_model'));
     }
 
     function index() {
@@ -34,11 +34,13 @@ class AddToCart extends CI_controller {
         $this->load->view('siatex/addtocart/addtocart', $data);
     }
 
-    function update() {
-        $data = array();
-        $data['css'] = '';
-        $products = array();
-        $this->load->view('siatex/addtocart/addtocart', $data);
+    function update($rowid, $qty) {
+        $data = array(
+            'rowid' => $rowid,
+            'qty' => $qty
+        );
+        $this->cart->update($data);
+        return $this->cart->update($data);
     }
 
     function insert() {
@@ -104,7 +106,7 @@ class AddToCart extends CI_controller {
 
         $this->session->set_flashdata('success', false);
         if (!empty($_POST)) {
-
+//            $captcha = $this->_render_captcha();
             if ($this->_process($_POST)) {
                 $this->session->set_flashdata('success', TRUE);
                 redirect('addtocart/order_review');
@@ -122,13 +124,15 @@ class AddToCart extends CI_controller {
         $fields['city'] = array('required' => TRUE, 'row_class' => 'row');
         $fields['state'] = array('required' => TRUE, 'row_class' => 'row');
         $fields['postalcode'] = array('required' => TRUE, 'label' => 'Zip/Post Code', 'row_class' => 'row');
-//        $fields['country'] = array('required' => TRUE, 'value' => $user['country'], 'row_class'=>'row', 'type' => 'select',
-//            'options' => $this->countries_model->options_list()
-//        );
+        $fields['country'] = array('required' => TRUE, 'row_class' => 'row', 'value' => 'United States', 'type' => 'select',
+            'options' => $this->countries_model->options_list()
+        );
         $fields['phone'] = array('required' => TRUE, 'label' => 'Phone Number', 'row_class' => 'row');
 
         $fields['email'] = array('required' => TRUE, 'label' => 'Email Address', 'row_class' => 'row');
         $fields['email']['after_html'] = '<span id="email_check"></span>';
+        $captcha = $this->_render_captcha();
+        $fields['captcha'] = array('required' => TRUE, 'row_class' => 'captcha_row', 'placeholder' => 'Type the code shown', 'label' => 'Enter the 5 characters', 'class' => 'small', 'before_html' => ' <span class="captcha">' . $captcha['image'] . '</span><span class="captcha_text"></span>');
 
 
         $this->form_builder->set_fields($fields);
@@ -152,15 +156,46 @@ class AddToCart extends CI_controller {
         $this->load->view('siatex/addtocart/checkout', $vars);
     }
 
+    function _render_captcha() {
+        $this->load->library('captcha');
+
+        $blog_config = $this->config->item('resetpass');
+        $assets_folders = $this->config->item('assets_folders');
+
+        $captcha_path = '/assets/captchas/';
+        $word = strtoupper(random_string('alnum', 5));
+
+        $captcha_options = array(
+            'word' => $word,
+            'img_path' => FCPATH . $captcha_path, // system path to the image
+            'img_url' => base_url() . $captcha_path, // web path to the image
+            'font_path' => FCPATH . '/assets/fonts/',
+        );
+        //  $captcha_options = array_merge($captcha_options);
+
+        if (!empty($_POST['captcha']) AND $this->session->userdata('comment_captcha') == $this->input->post('captcha')) {
+            $captcha_options['word'] = $this->input->post('captcha');
+        }
+
+        $captcha = $this->captcha->get_captcha_image($captcha_options);
+
+        $this->session->set_userdata('comment_captcha', $captcha['word']);
+
+        return $captcha;
+    }
+
     function _process($data) {
 
         $this->load->library('validator');
         $userdata_contents = array();
-        if ($this->validator->validate()) {
-            unset($data['submit']);
-            $userdata_contents = $data;
-            $this->CI->session->set_userdata(array('userdata_contents' => $userdata_contents));
-            return TRUE;
+        if (!empty($_POST['captcha']) AND strtolower($this->session->userdata('comment_captcha')) === strtolower($this->input->post('captcha'))) {
+
+            if ($this->validator->validate()) {
+                unset($data['submit']);
+                $userdata_contents = $data;
+                $this->CI->session->set_userdata(array('userdata_contents' => $userdata_contents));
+                return TRUE;
+            }
         }
         $this->CI->session->set_userdata(array('userdata_contents' => $userdata_contents));
         return FALSE;
@@ -174,6 +209,20 @@ class AddToCart extends CI_controller {
         $this->load->view('siatex/addtocart/order_review', $data);
     }
 
+    function remove($rowid) {
+        $data = array(
+            'rowid' => $rowid,
+            'qty' => 0
+        );
+        $this->cart->update($data);
+        if (!count($this->cart->contents())) {
+            redirect('products');
+        }
+
+
+        redirect('addtocart');
+    }
+
     function order_submit() {
         $data = array();
         $data['css'] = '';
@@ -185,9 +234,9 @@ class AddToCart extends CI_controller {
         $viewhtml1 = $this->load->view('siatex/addtocart/emailview', $data, true);
         $data['viewhtml1'] = $viewhtml1;
 
-
+        $data['message'] = '';
         if (!empty($_POST)) {
-
+            $data['message'] = 'Your information has been submitted successfully';
             $this->_sent_email_process($viewhtml1, $userdata);
         }
 
@@ -201,7 +250,7 @@ class AddToCart extends CI_controller {
         $this->load->helper('file');
 
         $config = Array(
-            'protocol' => 'smtp',
+            'protocol' => 'mail',
             'smtp_host' => 'smtp.gmail.com',
             'validation' => TRUE,
             'smtp_timeout' => 30,
@@ -215,14 +264,13 @@ class AddToCart extends CI_controller {
         $this->load->library('email', $config);
 
 
-//        $this->load->library('email');
-
+        $this->load->library('email');
         // print_r($userdata);
         $this->email->from(EMAILFROM, SENDERNAME);
         $this->email->to($userdata['email']);
         $this->email->cc(EMAILCC);
 
-        $this->email->subject('Email Test');
+        $this->email->subject('Order received from SiaTex');
         $this->email->message($viewhtml1);
 
         if (file_exists($name)) {
@@ -258,7 +306,7 @@ class AddToCart extends CI_controller {
         $pdf->SetHeaderMargin(5);
         $pdf->SetFooterMargin(0);
         // set auto page breaks
-        $pdf->SetAutoPageBreak(false, PDF_MARGIN_BOTTOM);
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
         // set image scale factor
         $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
         // set some language-dependent strings (optional)

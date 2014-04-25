@@ -1,5 +1,5 @@
 <?php $this->load->view('siatex/_blocks/header') ?>
-
+<?php if (empty($assets_path)) $assets_path = '/assets/'; ?>
 <section id="main_inner">
 
     <?php
@@ -30,23 +30,31 @@
 
                     <tr>
                         <td>
-                            <?php echo $items['name']; ?>
 
-                            <?php if ($this->cart->has_options($items['rowid']) == TRUE): ?>
+                            <p style="float: right; text-align: left">
+                                <?php echo $items['name']; ?><br/>
+                                <?php if ($this->cart->has_options($items['rowid']) == TRUE): ?>
 
-                                <p>
+
                                     <?php
+                                    $products = array();
                                     foreach ($this->cart->product_options($items['rowid']) as $option_name => $option_value):
                                         if (is_string($option_value)) {
                                             ?>
 
                                             <strong><?php echo $option_name; ?>:</strong> <?php echo $option_value; ?><br />
 
-                                        <?php }endforeach; ?>
+                                            <?php
+                                        } elseif (is_array($option_value)) {
+                                            $products = $option_value;
+                                        }endforeach;
+                                    ?>
                                 </p>
 
                             <?php endif; ?>
-
+                            <div style="width: 85px; float: left">
+                                <img src="<?= is_array($products['products_images']) && count($products['products_images']) ? $assets_path . 'images/' . $products['products_images'][0]['item_image'] : $assets_path . 'images/products_pic_4.png' ?>" height="100" width="80" alt="img">
+                            </div>
                         </td>
                         <td style="text-align:right"><?php echo $this->cart->format_number($items['price']); ?></td>
                         <td><?php echo $items['qty'] ?></td>
@@ -69,44 +77,38 @@
         </div>
 
 
-        <div class=" ">
+        <div class="login_box ">
             <div ><h2> Customer Information Review</h2></div>
-            <table class="order_review">
-                <tbody>
-                    <tr>
-                        <td class="label"><label id="label_first_name" for="first_name">First name</label></td>
-                        <td class="value"> <?= $userdata['first_name']; ?></td>
-                    </tr>
-                    <tr>
-                        <td class="label"><label id="label_last_name" for="last_name">Last name</label></td>
-                        <td class="value"> <?= $userdata['last_name']; ?></td>    </tr>
-                    <tr>
-                        <td class="label"><label id="label_company" for="company">Company</label></td>
-                        <td class="value"> <?= $userdata['company']; ?></td> </tr>
-                    <tr>
-                        <td class="label"><label id="label_street1" for="street1">Address</label></td>
-                        <td class="value"> <?= $userdata['street1']; ?></td> </tr>
-                    <tr>
-                        <td class="label"><label id="label_street2" for="street2">Address 2</label></td>
-                        <td class="value"> <?= $userdata['street2']; ?></td>  </tr>
-                    <tr>
-                        <td class="label"><label id="label_city" for="city">City</label></td>
-                        <td class="value"> <?= $userdata['city']; ?></td>   </tr>
-                    <tr>
-                        <td class="label"><label id="label_state" for="state">State</label></td>
-                        <td class="value"> <?= $userdata['state']; ?></td> </tr>
-                    <tr>
-                        <td class="label"><label id="label_postalcode" for="postalcode">Zip/Post Code</label></td>
-                        <td class="value"> <?= $userdata['postalcode']; ?></td>  </tr>
-                    <tr>
-                        <td class="label"><label id="label_phone" for="phone">Phone Number</label></td>
-                        <td class="value"> <?= $userdata['phone']; ?></td>   </tr>
-                    <tr>
-                        <td class="label"><label id="label_email" for="email">Email Address</label></td>
-                        <td class="value"> <?= $userdata['email']; ?></td>   </tr>
 
-                </tbody>
-            </table> 
+            <div class="contact_form checkout_page">
+                <div class="login_box">
+                    <ul>
+                        <li>First name: <?= $userdata['first_name']; ?></li>
+                        <li>Last name: <?= $userdata['last_name']; ?></li>
+                        <li>Company: <?= $userdata['company']; ?> </li>
+                        <li>Address: <?= $userdata['street1']; ?> </li>
+                        <li>Address 2 : <?= $userdata['street2']; ?> </li>
+                        <li>Email Address: <?= $userdata['email']; ?></li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+            <div class="contact_form">
+                <div class="login_box">
+                    <ul>
+                        <li>City : <?= $userdata['city']; ?></li>
+                        <li>State: <?= $userdata['state']; ?></li>
+
+                        <li>Zip/Post Code: <?= $userdata['postalcode']; ?></li>
+                        <li>Phone Number: <?= $userdata['first_name']; ?></li>
+                        <li>Country: <?= $userdata['country']; ?></li>
+                    </ul>
+                </div>
+            </div>
+
+
         </div>
         <p>
             <?php

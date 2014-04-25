@@ -1,5 +1,5 @@
 <?php $this->load->view('siatex/_blocks/header') ?>
-
+<?php if (empty($assets_path)) $assets_path = '/assets/'; ?>
 <section id="main_inner">
 
     <?php
@@ -29,27 +29,35 @@
 
                     <tr>
                         <td>
-                            <?php echo $items['name']; ?>
 
-                            <?php if ($this->cart->has_options($items['rowid']) == TRUE): ?>
+                            <p style="float: right; text-align: left">
+                                <?php echo $items['name']; ?><br/>
+                                <?php if ($this->cart->has_options($items['rowid']) == TRUE): ?>
 
-                                <p>
+
                                     <?php
+                                    $products = array();
                                     foreach ($this->cart->product_options($items['rowid']) as $option_name => $option_value):
                                         if (is_string($option_value)) {
                                             ?>
 
                                             <strong><?php echo $option_name; ?>:</strong> <?php echo $option_value; ?><br />
 
-                                        <?php }endforeach; ?>
+                                            <?php
+                                        } elseif (is_array($option_value)) {
+                                            $products = $option_value;
+                                        }endforeach;
+                                    ?>
                                 </p>
 
                             <?php endif; ?>
-
+                            <div style="width: 85px; float: left">
+                                <img src="<?= is_array($products['products_images']) && count($products['products_images']) ? $assets_path . 'images/' . $products['products_images'][0]['item_image'] : $assets_path . 'images/products_pic_4.png' ?>" height="100" width="80" alt="img">
+                            </div>
                         </td>
                         <td style="text-align:right"><?php echo $this->cart->format_number($items['price']); ?></td>
                         <td><?php echo form_input(array('name' => 'items[' . $i . '][qty]', 'value' => $items['qty'], 'maxlength' => '3', 'size' => '5')); ?></td>
-                        <td >remove </td>
+                        <td ><a href="<?= site_url('addtocart/remove/' . $items['rowid']); ?>"><img src="<?= $assets_path ?>images/remove_icon.png" alt="img" width="26" height="30" border="0"></a> </td>
                         <td style="text-align:right">$<?php echo $this->cart->format_number($items['subtotal']); ?></td>
                     </tr>
 
@@ -73,7 +81,7 @@
                             ?>
                             <a class="update" href="<?= site_url('addtocart/checkout') ?>"> Checkout</a>
                         </p> 
-                        
+
                     </td>
                 </tr>
             </table>

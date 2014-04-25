@@ -21,7 +21,7 @@
                                 <li><input type="text"></li>
                                 <li>Message  </li>
                                 <li><textarea></textarea></li>
-                                     <li><input type="submit" name="submit" value="SUBMIT" id="form_submit"/></li>
+                                     <li><input type="submit" name="submit" class="buy_more" value="SUBMIT" id="form_submit"/></li>
                                 </ul>
                             </form>
                             </div>

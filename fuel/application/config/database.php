@@ -47,6 +47,11 @@
 $active_group = 'default';
 $active_record = TRUE;
 
+//$db['default']['hostname'] = 'localhost';
+//$db['default']['username'] = 'siatexecom';
+//$db['default']['password'] = 'siatexecom';
+//$db['default']['database'] = 'siatexecom';
+
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
 $db['default']['password'] = '';

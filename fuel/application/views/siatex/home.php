@@ -8,13 +8,13 @@
 
     <div class="products_box_contener">
         <?php foreach ($products as $key => $product) { ?>
-            <div class="products_box">
+            <div class="products_box <?= $key % 3 === 2 ? 'last' : '' ?>">
                 <p><img src="<?php echo $assets_path; ?>images/products_pic_1.png" height="264" width="264" alt="img"/></p>
                 <h3><?= $product['item_name'] ?></h3>
                 <!--p><?= $product['descriptions'] ?></p-->
                 <h1>$50.00</h1>
                 <ul>
-                   <li> <a href="<?php echo site_url('products/' . $product['slug']); ?>"><img src="<?php echo $assets_path; ?>images/view.png" height="36" width="151" border="0" alt="IMG"/></a></li>
+                    <li> <a href="<?php echo site_url('products/' . $product['slug']); ?>">View Details</a></li>
                 </ul>
 
             </div>
